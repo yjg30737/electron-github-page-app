@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "electron": "^19.0.0"
+  },
+  "dependencies": {
+    "shell": "^0.9.4"
   }
 }
