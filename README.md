@@ -1,7 +1,7 @@
 # electron-github-page-app
 Showing Github Page with Electron app
 
-<a href="https://yjg30737.github.io/">My Github Page</a>, by the way.
+This is based on my <a href="https://yjg30737.github.io/">Github Page</a>, by the way.
 
 ## How to Use
 ### Run the demo
