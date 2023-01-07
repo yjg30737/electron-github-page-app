@@ -1,6 +1,30 @@
-const { app, Menu, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
+const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
 const path = require('path')
 
+// Add dialog to confirm 
+function showConfirmationDialog() {
+  const options = {
+    type: 'question',
+    buttons: ['Yes', 'No'],
+    defaultId: 0,
+    title: 'Wait! Are you serious?',
+    message: 'Are you really sure about this? Do you really want to quit this thing?'
+  };
+
+  const response = dialog.showMessageBoxSync(options);
+  return response === 0;
+}
+
+// Handling the quit event
+app.on('before-quit', event => {
+  const shouldQuit = showConfirmationDialog();
+  
+  if(!shouldQuit) {
+    event.preventDefault();
+  }
+});
+
+// Menu
 const menuTemplate = [
   {
     label: 'File',
@@ -8,12 +32,7 @@ const menuTemplate = [
       {
         label: 'Exit',
         click() {
-          app.on('before-quit', event => {
-            const shouldQuit = showConfirmationDialog();
-            if(shouldQuit) {
-              event.preventDefault();
-            }
-          });
+         app.quit();
         }
       }
     ]
