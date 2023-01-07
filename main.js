@@ -1,11 +1,30 @@
-const { app, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
+const { app, Menu, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
 const path = require('path')
+
+const menuTemplate = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Exit',
+        click() {
+          app.on('before-quit', event => {
+            const shouldQuit = showConfirmationDialog();
+            if(shouldQuit) {
+              event.preventDefault();
+            }
+          });
+        }
+      }
+    ]
+  }
+]
 
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    autoHideMenuBar: true,
+    // autoHideMenuBar: true,
     // webPreferences: {
     //     preload: path.join(__dirname, 'preload.js')
     // },
@@ -32,6 +51,9 @@ const createWindow = () => {
   win.loadURL('https://yjg30737.github.io/')
 
 }
+
+const menu = Menu.buildFromTemplate(menuTemplate);
+Menu.setApplicationMenu(menu);
 
 app.whenReady().then(() => {
   createWindow()

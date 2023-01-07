@@ -9,7 +9,8 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^19.0.0"
+    "electron": "^19.0.0",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
     "shell": "^0.9.4"
