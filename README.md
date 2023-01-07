@@ -1,12 +1,15 @@
 # electron-github-page-app
 Showing Github Page with Electron app
 
-<a href="https://yjg30737.github.io/">My Github Page</a>, by the way.
+This is based on my <a href="https://yjg30737.github.io/">Github Page</a>, by the way.
 
 ## How to Use
+### Run the demo
 1. git clone ~
 2. npm i
 3. npm start run
+### How to build
+1. npm run build:win64 // Windows 64 bit
 
 ## Result
 
