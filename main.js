@@ -1,4 +1,4 @@
-const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
+const { app, Menu, dialog, remote, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
 const path = require('path')
 
 // Add dialog to confirm 
@@ -34,9 +34,24 @@ const menuTemplate = [
         click() {
          app.quit();
         }
+      },
+    ],
+  },
+  {
+    label: 'Help',
+    submenu: [ 
+      {
+        label: 'About',
+        click() {
+          dialog.showMessageBox({
+            type: 'info',
+            title: 'About My App',
+            message: 'My App v1.0.0'
+          });
+        }
       }
     ]
-  }
+  },
 ]
 
 const createWindow = () => {
