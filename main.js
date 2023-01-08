@@ -10,7 +10,9 @@ const createWindow = () => {
     // webPreferences: {
     //     preload: path.join(__dirname, 'preload.js')
     // },
-  })
+  });
+
+  const zoom_init_val = win.webContents.getZoomFactor();
 
   // Add dialog to confirm 
   function showConfirmationDialog() {
@@ -34,6 +36,10 @@ const createWindow = () => {
       event.preventDefault();
     }
   });
+
+  function resetZoom() {
+    win.webContents.setZoomFactor(zoom_init_val);
+  }
 
   function zoomIn() {
     win.webContents.setZoomFactor(win.webContents.getZoomFactor() + 0.1)
@@ -63,12 +69,12 @@ const createWindow = () => {
           label: 'Actual Size',
           accelerator: 'Ctrl+0',
           click() {
-            webFrame.resetZoom();
+            resetZoom()
           }
         },
         {
           label: 'Zoom In',
-          accelerator: 'Ctrl+Plus',
+          accelerator: 'Ctrl+=',
           click() {
             zoomIn()
           }
