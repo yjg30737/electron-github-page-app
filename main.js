@@ -1,6 +1,5 @@
-const { app, Menu, dialog, remote, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
+const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell, webFrame } = require('electron')
 const path = require('path')
-
 
 
 const createWindow = () => {
@@ -12,72 +11,105 @@ const createWindow = () => {
     //     preload: path.join(__dirname, 'preload.js')
     // },
   })
+
   // Add dialog to confirm 
-function showConfirmationDialog() {
-  const options = {
-    type: 'question',
-    buttons: ['Yes', 'No'],
-    defaultId: 0,
-    title: 'Wait! Are you serious?',
-    message: 'Are you really sure about this? Do you really want to quit this thing?'
-  };
+  function showConfirmationDialog() {
+    const options = {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      defaultId: 0,
+      title: 'Wait! Are you serious?',
+      message: 'Are you really sure about this? Do you really want to quit this thing?'
+    };
 
-  const response = dialog.showMessageBoxSync(options);
-  return response === 0;
-}
-
-// Handling the quit event
-app.on('before-quit', event => {
-  const shouldQuit = showConfirmationDialog();
-  
-  if(!shouldQuit) {
-    event.preventDefault();
+    const response = dialog.showMessageBoxSync(options);
+    return response === 0;
   }
-});
 
-// Menu
-const menuTemplate = [
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Exit',
-        click() {
-         app.quit();
+  // Handling the quit event
+  app.on('before-quit', event => {
+    const shouldQuit = showConfirmationDialog();
+    
+    if(!shouldQuit) {
+      event.preventDefault();
+    }
+  });
+
+  function zoomIn() {
+    win.webContents.setZoomFactor(win.webContents.getZoomFactor() + 0.1)
+  }
+
+  function zoomOut() {
+    win.webContents.setZoomFactor(win.webContents.getZoomFactor() - 0.1)
+  }
+
+  // Menu
+  const menuTemplate = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Exit',
+          click() {
+            app.quit();
+          }
+        },
+      ],
+    },
+    {
+      label: 'View',
+      submenu: [
+        {
+          label: 'Actual Size',
+          accelerator: 'Ctrl+0',
+          click() {
+            webFrame.resetZoom();
+          }
+        },
+        {
+          label: 'Zoom In',
+          accelerator: 'Ctrl+Plus',
+          click() {
+            zoomIn()
+          }
+        },
+        {
+          label: 'Zoom Out',
+          accelerator: 'Ctrl+-',
+          click() {
+            zoomOut()
+          }
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Full Screen',
+          type: 'checkbox',
+          checked: win.isFullScreen(),
+          accelerator: 'F11',
+          click() {
+            win.setFullScreen(!win.isFullScreen());
+          }
         }
-      },
-    ],
-  },
-  {
-    label: 'View',
-    submenu: [
-      {
-        label: 'Full Screen',
-        type: 'checkbox',
-        checked: win.isFullScreen(),
-        accelerator: 'F11',
-        click() {
-          win.setFullScreen(!win.isFullScreen());
+      ]
+    },
+    {
+      label: 'Help',
+      submenu: [ 
+        {
+          label: 'About',
+          click() {
+            dialog.showMessageBox({
+              type: 'info',
+              title: 'About My App',
+              message: 'My App v1.0.0'
+            });
+          }
         }
-      }
-    ]
-  },
-  {
-    label: 'Help',
-    submenu: [ 
-      {
-        label: 'About',
-        click() {
-          dialog.showMessageBox({
-            type: 'info',
-            title: 'About My App',
-            message: 'My App v1.0.0'
-          });
-        }
-      }
-    ]
-  },
-]
+      ]
+    },
+  ]
 
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
