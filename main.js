@@ -1,7 +1,18 @@
 const { app, Menu, dialog, remote, BrowserWindow, ipcMain, nativeTheme, shell } = require('electron')
 const path = require('path')
 
-// Add dialog to confirm 
+
+
+const createWindow = () => {
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    // autoHideMenuBar: true,
+    // webPreferences: {
+    //     preload: path.join(__dirname, 'preload.js')
+    // },
+  })
+  // Add dialog to confirm 
 function showConfirmationDialog() {
   const options = {
     type: 'question',
@@ -38,6 +49,20 @@ const menuTemplate = [
     ],
   },
   {
+    label: 'View',
+    submenu: [
+      {
+        label: 'Full Screen',
+        type: 'checkbox',
+        checked: win.isFullScreen(),
+        accelerator: 'F11',
+        click() {
+          win.setFullScreen(!win.isFullScreen());
+        }
+      }
+    ]
+  },
+  {
     label: 'Help',
     submenu: [ 
       {
@@ -54,16 +79,8 @@ const menuTemplate = [
   },
 ]
 
-const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // autoHideMenuBar: true,
-    // webPreferences: {
-    //     preload: path.join(__dirname, 'preload.js')
-    // },
-  })
-  
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
   // ipcMain.handle('dark-mode:toggle', () => {
   //   if (nativeTheme.shouldUseDarkColors) {
   //     nativeTheme.themeSource = 'light'
@@ -85,9 +102,6 @@ const createWindow = () => {
   win.loadURL('https://yjg30737.github.io/')
 
 }
-
-const menu = Menu.buildFromTemplate(menuTemplate);
-Menu.setApplicationMenu(menu);
 
 app.whenReady().then(() => {
   createWindow()
