@@ -1,17 +1,51 @@
 const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell, webFrame } = require('electron')
 const path = require('path')
+const fs = require('fs');
+
+
+// Frameless Window, movable, draggable, can interact with only button
+// can decide to tag allowed to click in styles.css 
+class FramelessWindow extends BrowserWindow {
+    constructor(options) {
+      options.titleBarStyle = 'hidden';
+      options.titleBarOverlay = true;
+      super(options);
+    }
+}
+
+// Customizable title bar window, still working
+// this one is nice to use >> https://www.npmjs.com/package/custom-electron-titlebar
+class CustomTitleBarWindow extends BrowserWindow {
+  constructor(options) {
+    super(options);
+  }
+}
 
 
 const createWindow = () => {
+  // default
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    // autoHideMenuBar: true,
-    // webPreferences: {
-    //     preload: path.join(__dirname, 'preload.js')
+    // width: 800,
+    // height: 600,
+    // titleBarStyle: 'hidden',
+    // titleBarOverlay: true,
+    // // autoHideMenuBar: true,
+    // // webPreferences: {
+    // //     preload: path.join(__dirname, 'preload.js')
     // },
   });
 
+  // frameless (no window buttons at all, movable, can click button)
+  // const win = new BrowserWindow({
+  //   frame: false,
+  // });
+
+  // see the description above
+  // const win = new FramelessWindow({})
+
+  // still working
+  // const win = new CustomTitleBarWindow({})
+  
   const zoom_init_val = win.webContents.getZoomFactor();
 
   // Add dialog to confirm 
@@ -137,7 +171,11 @@ const createWindow = () => {
     shell.openExternal(url);
   });
 
-  win.loadURL('https://yjg30737.github.io/')
+  win.loadURL('https://yjg30737.github.io/');
+
+  let stylesheet = fs.readFileSync("styles.css", "utf-8");
+
+  win.webContents.insertCSS(stylesheet);
 
 }
 
