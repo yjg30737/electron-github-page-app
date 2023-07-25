@@ -21,10 +21,14 @@ class CustomTitleBarWindow extends BrowserWindow {
   }
 }
 
+const iconPath = path.resolve(__dirname, 'logo.png')
+
 
 const createWindow = () => {
   // default
+  console.log();
   const win = new BrowserWindow({
+    icon: iconPath,
     // width: 800,
     // height: 600,
     // titleBarStyle: 'hidden',
@@ -171,11 +175,13 @@ const createWindow = () => {
     shell.openExternal(url);
   });
 
-  win.loadURL('https://yjg30737.github.io/');
+  win.loadURL('https://r3f-character-customization-final-seven.vercel.app/?vercelToolbarCode=3v1stLFzMkcKdG9');
 
-  let stylesheet = fs.readFileSync("styles.css", "utf-8");
+  // add stylesheet 
+  
+  // let stylesheet = fs.readFileSync("styles.css", "utf-8");
 
-  win.webContents.insertCSS(stylesheet);
+  // win.webContents.insertCSS(stylesheet);
 
 }
 
