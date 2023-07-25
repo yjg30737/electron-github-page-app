@@ -170,12 +170,12 @@ const createWindow = () => {
   //   nativeTheme.themeSource = 'dark'
   // })
 
-  win.webContents.on('new-window', function (e, url) {
-    e.preventDefault();
-    shell.openExternal(url);
-  });
+  win.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url);
+    return { action: 'deny' }
+})
 
-  win.loadURL('https://r3f-character-customization-final-seven.vercel.app/?vercelToolbarCode=3v1stLFzMkcKdG9');
+  win.loadURL('https://yjg30737.github.io/');
 
   // add stylesheet 
   
