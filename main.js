@@ -1,4 +1,4 @@
-const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell, webFrame } = require('electron')
+const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell, webFrame, Tray } = require('electron')
 const path = require('path')
 const fs = require('fs');
 
@@ -26,7 +26,6 @@ const iconPath = path.resolve(__dirname, 'logo.png')
 
 const createWindow = () => {
   // default
-  console.log();
   const win = new BrowserWindow({
     icon: iconPath,
     // width: 800,
@@ -51,29 +50,6 @@ const createWindow = () => {
   // const win = new CustomTitleBarWindow({})
   
   const zoom_init_val = win.webContents.getZoomFactor();
-
-  // Add dialog to confirm 
-  function showConfirmationDialog() {
-    const options = {
-      type: 'question',
-      buttons: ['Yes', 'No'],
-      defaultId: 0,
-      title: 'Wait! Are you serious?',
-      message: 'Are you really sure about this? Do you really want to quit this thing?'
-    };
-
-    const response = dialog.showMessageBoxSync(options);
-    return response === 0;
-  }
-
-  // Handling the quit event
-  app.on('before-quit', event => {
-    const shouldQuit = showConfirmationDialog();
-    
-    if(!shouldQuit) {
-      event.preventDefault();
-    }
-  });
 
   function resetZoom() {
     win.webContents.setZoomFactor(zoom_init_val);
@@ -175,7 +151,7 @@ const createWindow = () => {
     return { action: 'deny' }
 })
 
-  win.loadURL('https://yjg30737.github.io/');
+  win.loadURL('https://www.perplexity.ai/');
 
   // add stylesheet 
   
@@ -183,6 +159,50 @@ const createWindow = () => {
 
   // win.webContents.insertCSS(stylesheet);
 
+  // tray icon
+  
+  let tray = new Tray('logo.png');
+
+  tray.on('click', () => {
+    win.show();
+  }); 
+  
+
+  app.on('activate', () => {
+    win.show();
+  });
+
+  // Add dialog to confirm 
+  function showConfirmationDialog() {
+    const options = {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      defaultId: 0,
+      title: 'Wait! Are you serious?',
+      message: 'Are you really sure about this? Do you really want to quit this thing?'
+    };
+
+    const response = dialog.showMessageBoxSync(options);
+    return response === 0;
+  }
+
+  win.on('close', (event) => {
+    const shouldQuit = showConfirmationDialog();
+    
+    if(!shouldQuit) {
+      event.preventDefault();
+      win.hide();
+      // Minimize the window to the system tray
+      // win.hide();
+    } else {
+
+    }
+  });
+
+  // Handling the quit event
+  // app.on('before-quit', event => {
+  //   event.preventDefault();
+  // });
 }
 
 app.whenReady().then(() => {
