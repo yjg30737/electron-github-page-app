@@ -119,6 +119,12 @@ const createWindow = () => {
           click() {
             win.setAlwaysOnTop(!win.isAlwaysOnTop());
           }
+        },
+        {
+          label: 'Opacity',
+          click() {
+            showOpacityDialog();
+          }
         }
       ]
     },
@@ -179,6 +185,10 @@ const createWindow = () => {
   app.on('activate', () => {
     win.show();
   });
+
+  function showOpacityDialog() {
+    console.log('still working');
+  }
 
   // Add dialog to confirm 
   function showConfirmationDialog() {
