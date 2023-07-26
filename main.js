@@ -111,6 +111,14 @@ const createWindow = () => {
           click() {
             win.setFullScreen(!win.isFullScreen());
           }
+        },
+        {
+          label: 'Always on Top',
+          type: 'checkbox',
+          checked: win.isAlwaysOnTop(),
+          click() {
+            win.setAlwaysOnTop(!win.isAlwaysOnTop());
+          }
         }
       ]
     },
