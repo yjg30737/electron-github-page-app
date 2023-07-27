@@ -1,4 +1,4 @@
-const { app, Menu, dialog, BrowserWindow, ipcMain, nativeTheme, shell, webFrame, Tray } = require('electron')
+const { app, Menu, dialog, BrowserWindow, ipcMain, Notification, nativeTheme, shell, webFrame, Tray } = require('electron')
 const path = require('path')
 const fs = require('fs');
 
@@ -144,7 +144,7 @@ const createWindow = () => {
       ]
     },
   ]
-
+  
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
   // ipcMain.handle('dark-mode:toggle', () => {
@@ -223,6 +223,13 @@ const createWindow = () => {
   // });
 }
 
+const NOTIFICATION_TITLE = 'Hello, Electron!'
+const NOTIFICATION_BODY = 'Notification ready!'
+
+function showNotification () {
+  new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
+}
+
 app.whenReady().then(() => {
   createWindow()
-})
+}).then(showNotification)
