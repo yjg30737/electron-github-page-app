@@ -1,5 +1,6 @@
-const { app, Menu, dialog, BrowserWindow, ipcMain, Notification, nativeTheme, shell, webFrame, Tray } = require('electron')
-const path = require('path')
+const { app, Menu, dialog, BrowserWindow, ipcMain, Notification, nativeTheme, shell, webFrame, Tray } = require('electron');
+const path = require('path');
+const axios = require('axios');
 const fs = require('fs');
 
 
@@ -168,7 +169,7 @@ const createWindow = () => {
     return { action: 'deny' }
 })
 
-  win.loadURL('https://www.perplexity.ai/');
+  win.loadURL('https://nuxt.com/');
 
   // add stylesheet 
   
