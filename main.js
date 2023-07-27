@@ -28,6 +28,9 @@ const createWindow = () => {
   // default
   const win = new BrowserWindow({
     icon: iconPath,
+    webPreferences: {
+      nodeIntegration: true
+    }
     // width: 800,
     // height: 600,
     // titleBarStyle: 'hidden',
