@@ -169,7 +169,7 @@ const createWindow = () => {
     return { action: 'deny' }
 })
 
-  win.loadURL('https://nuxt.com/');
+  win.loadURL('https://sveltekit-1-nine-red.vercel.app/');
 
   // add stylesheet 
   
